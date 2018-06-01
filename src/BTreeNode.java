@@ -1,11 +1,10 @@
 public class BTreeNode {
 
-	private int numKeys; // number of the keys in the current leaf
-	private BTreeNode[] children; // a list that contains the childerns of the leaf
+	private int numKeys; // number of the keys in the current node
+	private BTreeNode[] children; // a list that contains the childrens of the node
 	private boolean leaf; // check if this node is a leaf
-	private String[] keys;// a list that contains the keys of the leaf
+	private String[] keys;// a list that contains the keys of the node
 	private int t;//this number determine the max number of keys and the min number of keys
-
 
 	public BTreeNode(int t, BTreeNode node){
 		this.t=t;
@@ -21,7 +20,7 @@ public class BTreeNode {
 		this.t=t;
 	}
 
-
+	
 	/**
 	 * A function that compares between two node's values
 	 * @param nodeValue - the value of the node
@@ -71,7 +70,7 @@ public class BTreeNode {
 			prev.numKeys--;
 		}
 	}//close copy
-
+	
 	/**this function is responsible to update the children and the keys in the current node that we split. 
 	 * @param z-
 	 * @param y-
@@ -94,33 +93,39 @@ public class BTreeNode {
 		numKeys++;
 	}//close updateNode
 
-	/**this function inserts the key in the right node, if the node is full
-	 * the function will split the node with split function.
-	 * @param key-the key we want to insert.
-	 */
+/**this function inserts the key in the right node, if the node is full
+ * the function will split the node with split function.
+ * @param key-the key we want to insert.
+ */
 	public void insertNonFull(String key){
 		int i;
 		if(leaf==true){
 			for( i= numKeys-1 ; i>= 0 && key.compareTo(keys[i]) < 0 ; i--)//find the right index to insert key
 				keys[i+1]=keys[i];
-			keys[i+1]=key;
-			numKeys++;
+		keys[i+1]=key;
+		numKeys++;
 		}
 		else{//if it's not a leaf
 			for( i= numKeys-1 ; i>= 0 && key.compareTo(keys[i]) < 0 ; i--);//find the right index
-			i++;
-			if(children[i].numKeys==2*t-1){//check if the node is full
-				Split(i);//split the node
-				if(key.compareTo(keys[i])>0)
-					i++;
-			}
-			children[i].insertNonFull(key);
+				i++;
+				if(children[i].numKeys==2*t-1){//check if the node is full
+					Split(i);//split the node
+					if(key.compareTo(keys[i])>0)
+						i++;
+				}
+				children[i].insertNonFull(key);
 		}
 	}//close insertNonFull
-
+	
+	public int numOfChildern(){
+		int i=0;
+		while(this.children[i]!=null)
+			i++;
+		return i;
+	}
 	/**compares two nodes and checks if there equal.
 	 * @param node-the node that we compare with the current node. 
-	 * @return true if they equal.
+	 * @return 
 	 */
 	public boolean equals (BTreeNode node){
 		return (this.numKeys==node.numKeys && this.leaf==node.leaf && this.children.equals(node.children) && this.keys.equals(node.keys) && this.t==node.t);
@@ -165,4 +170,5 @@ public class BTreeNode {
 	public int getT() {
 		return t;
 	}
+
 }

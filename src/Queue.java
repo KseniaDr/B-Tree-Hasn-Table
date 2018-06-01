@@ -60,4 +60,8 @@ public class Queue {
 	public QNode getFirst(){
 		return first;
 	}
+	
+	public int getSize(){
+		return size;
+	}
 }

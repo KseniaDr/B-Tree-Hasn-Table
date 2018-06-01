@@ -3,9 +3,11 @@ public class HashListElement {
 
 	HashListElement next;
 	String data;
+	int counter;
 	
 	public HashListElement(String data){
 		this.data=data;
+		counter=0;
 	}
 	
 	public void setNext(HashListElement element){
@@ -14,5 +16,17 @@ public class HashListElement {
 	
 	public HashListElement getNext(){
 		return next;
+	}
+	
+	public int getConter(){
+		return counter;
+	}
+	
+	public void setCounter(){
+		counter++;
+	}
+	
+	public String getData(){
+		return data;
 	}
 }

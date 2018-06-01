@@ -133,18 +133,13 @@ public class Messages implements Iterable {
 	public void createHashTables(String string) {
 		try{
 			int sizeTable=Integer.parseInt(string);
-			for(int i=0 ; i < messages.length ; i++)
-				insertMsgToTable(messages[i], messages[i].createHashTable(sizeTable));
+			//for(int i=0 ; i < messages.length ; i++)
+				//messages[i].createHashTable(sizeTable);
+			
 		}
 		catch(RuntimeException e){
 			System.err.println("the input must be a number.");
 		}
 	}//close createHashTables
 	
-	private void insertMsgToTable(Message m, HashTable h){
-			String [] parts=m.getTextBody().split(" ");
-			for(int i=0 ; i < parts.length ; i++){
-				h.insert(parts[i]);
-			}
-	}
 }

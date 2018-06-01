@@ -50,7 +50,7 @@ public class Message {
 		for(int i=0 ; i < parts.length ; i++){
 			table.insert(parts[i]);
 		}
-	}
+	}//close createHashTable
 	
 	
 }

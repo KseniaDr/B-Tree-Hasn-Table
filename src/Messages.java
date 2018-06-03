@@ -3,33 +3,16 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Scanner;
 
-public class Messages implements Iterable {
+public class Messages implements Iterable<Message> {
 
 	private Message[] messages;
-	private Spam[] spams;
+	private Spams spams;
 
 	public Messages(){
 		//messages= new Message[FindMessagesLength(String path)];
 		//spams= new Spam[FindSpamsLength(String path)];
 	}
 
-	private int FindSpamsLength(String path) {
-		Scanner read = null;
-		try{//try to read from a file
-			read = new Scanner(new File(path));
-			
-			int size=0;
-			while(read.hasNext()){//find the length of the messages array
-				String temp=read.nextLine();
-				size++;
-			}
-			return size;
-		}
-		catch(Exception e){//if the file doesn't exist, print an error message.
-			System.out.println("could not find file 'spam_words.txt'");
-			return 0;
-		}
-	}
 	
 	private int FindMessagesLength(String path){
 		Scanner read = null;
@@ -50,10 +33,9 @@ public class Messages implements Iterable {
 		}
 	}
 
-	@Override
+	
 	public Iterator iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		return new MessageIterator(messages);
 	}
 
 	/**this function is responsible for opening the file.
@@ -63,7 +45,7 @@ public class Messages implements Iterable {
 		Scanner read = null;
 		try{//try to read from a file
 			read = new Scanner(new File(path));
-			messages= new Message[FindMessagesLength(path)];
+			messages=new Message[FindMessagesLength(path)];
 			ReadMessagesFile(read);
 		}
 		catch(Exception e){//if the file doesn't exist, print an error message.
@@ -105,8 +87,8 @@ public class Messages implements Iterable {
 		Scanner read = null;
 		try{//try to read from a file
 			read = new Scanner(new File(path));
-			spams= new Spam[FindSpamsLength(path)];
-			ReadSpamWordsFile(read);
+			spams= new Spams(read,path);
+			return findSpams(btree);
 		}
 		catch(Exception e){//if the file doesn't exist, print an error message.
 			System.out.println("could not find file 'spam_words.txt'");
@@ -114,32 +96,25 @@ public class Messages implements Iterable {
 		return null;
 	}
 
-	private void ReadSpamWordsFile(Scanner read) {
-		String allLine ="", spamWord="",percentageOfSpam="";
-		int indexSpace=0,i=0;
-		
-		while(read.hasNext()){ //while there is elements in the file.
-			allLine=read.nextLine();
-			indexSpace=allLine.indexOf(" ");
-			spamWord=allLine.substring(0,indexSpace);
-			percentageOfSpam=allLine.substring(indexSpace+1);
-			spams[i]=new Spam(spamWord,percentageOfSpam);//insert the spam word in to the array.
-			i++;
-			percentageOfSpam="";
-			spamWord="";
-		}
-	}
-
 	public void createHashTables(String string) {
 		try{
 			int sizeTable=Integer.parseInt(string);
 			//for(int i=0 ; i < messages.length ; i++)
 				//messages[i].createHashTable(sizeTable);
-			
 		}
 		catch(RuntimeException e){
 			System.err.println("the input must be a number.");
 		}
 	}//close createHashTables
 	
+	private String findSpams(BTree btree){
+		for(int i=0 ; i < messages.length ; i++){
+			String friend= messages[i].getNameOfTheDeliever() + " & " + messages[i].getNameOfTheReciever();
+			if(!btree.search(friend)){
+				while(spams.hasNext()){
+					
+				}
+			}
+		}
+	}
 }

@@ -1,5 +1,5 @@
 
-public class Message {
+public class Message{
 
 	private String nameOfTheDeliver;
 	private String nameOfTheReciever;

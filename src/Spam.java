@@ -1,5 +1,6 @@
+import java.util.Iterator;
 
-public class Spam {
+public class Spam implements Iterator<Spam> {
 
 	private String spamWord;
 	private String percentageOfSpam;
@@ -27,5 +28,17 @@ public class Spam {
 	
 	public String toString(){
 		return "Spam word : "+ this.spamWord + " , percentage of spam : " +this.percentageOfSpam;
+	}
+
+	@Override
+	public boolean hasNext() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Spam next() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

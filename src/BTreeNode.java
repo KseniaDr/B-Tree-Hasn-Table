@@ -20,24 +20,6 @@ public class BTreeNode {
 		this.t=t;
 	}
 
-	
-	/**
-	 * A function that compares between two node's values
-	 * @param nodeValue - the value of the node
-	 * @return - true if the values are equal, false if not
-	 */
-	public boolean compare (int i,String nodeValue){
-		if(keys[i].equals(nodeValue))// if it is the same value
-			return true;
-		else{// if the name are not in there original order
-			int secName = nodeValue.indexOf("&")+2;// find the first letter in the second name
-			String name = nodeValue.substring(secName) + " & " + nodeValue.substring(0, secName-3) ; 
-			if(keys[i].equals(name))// if it is the same value
-				return true;
-		}
-		return false;
-	}//close compare
-
 	/**this function splits the node.
 	 * @param childIndex-
 	 * @param t-
@@ -123,6 +105,18 @@ public class BTreeNode {
 			i++;
 		return i;
 	}
+	
+	public boolean search(String key) {
+		int i;
+		for (i = 0; i < numKeys && keys[i].compareTo(key) < 0 ; i++);
+		if(i <numKeys && keys[i].equals(key))
+			return true;
+		else if(leaf)
+			return false;
+		else
+			return children[i].search(key);//Recursive search
+	}
+	
 	/**compares two nodes and checks if there equal.
 	 * @param node-the node that we compare with the current node. 
 	 * @return 

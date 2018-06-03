@@ -77,6 +77,16 @@ public class BTree {
 			root.insertNonFull(friend);
 		}
 	}//close insert
+	
+	
+	public boolean search(String key){
+		int secName = key.indexOf("&")+2; // find the first letter in the second name
+		String key2=key.substring(secName) + " & " + key.substring(0, secName-3);
+		if(root!=null){
+			return root.search(key) || root.search(key2);
+		}
+		return false;
+	}
 
 	/**this function scans the tree and prints the tree nodes horizontally,
 	 * by inserting the nodes into a queue and working on one node each time, after printing the node the queue

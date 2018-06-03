@@ -27,4 +27,8 @@ public class HashTable {
 	public void insert(String word){
 		table[hashFunction(word)].insert(word);
 	}
+	
+	public int search(String key){
+		
+	}
 }

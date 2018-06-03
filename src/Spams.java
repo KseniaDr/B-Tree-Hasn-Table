@@ -4,13 +4,15 @@ import java.util.Scanner;
 
 public class Spams implements Iterable<Spam> {
 	private Spam[] spams;
-	private int position;
 	
 	public Spams(Scanner read,String path){
 		spams=new Spam[FindSpamsLength(path)];
 		ReadSpamWordsFile(read);
 	}
 	
+	/**this function read the file and creates the spam array
+	 * @param read - the scanner
+	 */
 	private void ReadSpamWordsFile(Scanner read) {
 		String allLine ="", spamWord="",percentageOfSpam="";
 		int indexSpace=0,i=0;
@@ -27,6 +29,10 @@ public class Spams implements Iterable<Spam> {
 		}
 	}
 	
+	/**finds the length of the spam array
+	 * @param path-the path of the file
+	 * @return the size of the array
+	 */
 	private int FindSpamsLength(String path) {
 		Scanner read = null;
 		try{//try to read from a file
@@ -46,8 +52,13 @@ public class Spams implements Iterable<Spam> {
 		}
 	}
 
+
+	public Spam[] getSpams(){
+		return spams;
+	}
+	
 	@Override
-	public Iterator iterator() {
+	public Iterator<Spam> iterator() {
 			return new SpamIterator(spams);
 	}
 }

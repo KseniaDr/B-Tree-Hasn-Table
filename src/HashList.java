@@ -11,29 +11,39 @@ public class HashList {
 		size=0;
 	}
 
-
-	public void insert(String data) {
+	/**adds a new string to the list of the message list
+	 * @param data the word that we want to add
+	 */
+	public void add(String data) {
 		HashListElement element = new HashListElement(data);   
-		if(start == null) {
-			start = element;
-			end = start;
-			size++;
-		}
-		else {
-			if(contains(element))
-				element.setCounter();
-			else{
-			end.setNext(element);
-			end = element;
-			size++;
+		if(!contains(element)){//if the element doesn't exists in the list
+			if(start == null) {
+				start = element;
+				end = start;
+				size++;
 			}
+			else {
+				end.setNext(element);
+				end = element;
+				size++;
+			}
+		}
+		else{
+			HashListElement temp=start;
+			while(temp!=null  && !element.getData().equals(temp.getData()))
+				temp=temp.getNext();
+			temp.setCounter();
 		}
 	}
 
+	/**checks if the element already exists in the list 
+	 * @param element-the element that we check
+	 * @return true if the element exists in the list, false if not
+	 */
 	public boolean contains(HashListElement element){
 		HashListElement temp = start;
 		for(int x = 0; x < size; x++){
-			if (temp.getData() == element.getData())
+			if (temp.getData().equals(element.getData()))
 				return true;
 			temp=temp.getNext();
 		}

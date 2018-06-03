@@ -6,7 +6,9 @@ public class HashTable {
 
 	public HashTable(int m){
 		size=m;
-		table= new HashList[m];
+		table= new HashList[size];
+		for (int i=0 ;  i< size ; i++)
+		table[i]=new HashList();
 	}
 
 	/**this function is responsible to maps keys of a message word 
@@ -20,15 +22,28 @@ public class HashTable {
 			sum = sum + ((int) word.charAt(i));
 		return sum%size;
 	}
-	
+
 	/**this function is responsible for inserting the words of the message in the hash table
 	 * @param word- the word that we want to insert.
 	 */
 	public void insert(String word){
-		table[hashFunction(word)].insert(word);
+		int place=hashFunction(word);
+		table[place].add(word);
 	}
-	
+
+	/**this function is responsible to search a word in the hashTable
+	 * @param key- the word that we want to search.
+	 * @return the index that represent the place of the word in the map
+	 */
 	public int search(String key){
-		
+		int j=hashFunction(key);
+		HashListElement temp =new HashListElement(key);
+		if (table[j].contains(temp)){//if the list contains the key
+			while (!temp.getData().equals(key)){
+				temp=temp.getNext();
+			}
+			return temp.getConter();//return the counter of the key
+		}
+		return -1;//if the key is not list
 	}
 }

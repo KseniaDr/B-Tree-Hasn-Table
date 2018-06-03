@@ -21,8 +21,7 @@ public class BTreeNode {
 	}
 
 	/**this function splits the node.
-	 * @param childIndex-
-	 * @param t-
+	 * @param childIndex-the index of the child that we want to split
 	 */
 	public void Split(int childIndex){
 		BTreeNode y=this.children[childIndex]; 
@@ -41,8 +40,8 @@ public class BTreeNode {
 	}//close split
 
 	/**copy the keys from the node that we want to split to the new node.
-	 * @param prev
-	 * @param current
+	 * @param prev-the previous node
+	 * @param current- the current node
 	 * @param index- the max index 
 	 */
 	private void copy(BTreeNode  prev, BTreeNode current, int index){
@@ -53,10 +52,8 @@ public class BTreeNode {
 		}
 	}//close copy
 	
-	/**this function is responsible to update the children and the keys in the current node that we split. 
-	 * @param z-
-	 * @param y-
-	 * @param childIndex-
+	/*this function is responsible to update the children and the keys in the current node that we split. 
+	 * learned in class.
 	 */
 	private void updateNode(BTreeNode z, BTreeNode y , int childIndex){
 		for(int i=this.numKeys ; i> childIndex ; i--)//move the children one step forwards
@@ -99,6 +96,8 @@ public class BTreeNode {
 		}
 	}//close insertNonFull
 	
+	/*returns the number of the children of the node
+	 */
 	public int numOfChildern(){
 		int i=0;
 		while(this.children[i]!=null)
@@ -106,6 +105,10 @@ public class BTreeNode {
 		return i;
 	}
 	
+	/**search the key in the node, learned in class
+	 * @param key- the key that we want to find
+	 * @return true if the key exists in the node, false if not
+	 */
 	public boolean search(String key) {
 		int i;
 		for (i = 0; i < numKeys && keys[i].compareTo(key) < 0 ; i++);
@@ -119,7 +122,7 @@ public class BTreeNode {
 	
 	/**compares two nodes and checks if there equal.
 	 * @param node-the node that we compare with the current node. 
-	 * @return 
+	 * @return true if it's the same node, false if not
 	 */
 	public boolean equals (BTreeNode node){
 		return (this.numKeys==node.numKeys && this.leaf==node.leaf && this.children.equals(node.children) && this.keys.equals(node.keys) && this.t==node.t);

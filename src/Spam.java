@@ -1,44 +1,29 @@
-import java.util.Iterator;
 
-public class Spam implements Iterator<Spam> {
+public class Spam{
 
 	private String spamWord;
-	private String percentageOfSpam;
+	private double percentageOfSpam;
 	
 	public Spam(String spamWord,String percentageOfSpam){
-		this.setPercentageOfSpam(percentageOfSpam);
-		this.setSpamWord(spamWord);
+		this.spamWord=spamWord;
+		try{
+			this.percentageOfSpam=Double.parseDouble(percentageOfSpam);//makes a number from the string
+		}
+		catch(RuntimeException e){
+			System.err.println("the percentage must be a number.");
+		}
 	}
 
 	public String getSpamWord() {
 		return spamWord;
 	}
 
-	public void setSpamWord(String spamWord) {
-		this.spamWord = spamWord;
-	}
-
-	public String getPercentageOfSpam() {
+	public double getPercentageOfSpam() {
 		return percentageOfSpam;
-	}
-
-	public void setPercentageOfSpam(String percentageOfSpam) {
-		this.percentageOfSpam = percentageOfSpam;
 	}
 	
 	public String toString(){
 		return "Spam word : "+ this.spamWord + " , percentage of spam : " +this.percentageOfSpam;
 	}
 
-	@Override
-	public boolean hasNext() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Spam next() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

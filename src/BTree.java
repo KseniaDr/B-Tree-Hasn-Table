@@ -78,7 +78,10 @@ public class BTree {
 		}
 	}//close insert
 	
-	
+	/**this function responsible for searching the key in the tree, if the key is in the tree will return true
+	 * @param key-the key we want to find
+	 * @return true if the key is in the tree, false if the key is not in the tree
+	 */
 	public boolean search(String key){
 		int secName = key.indexOf("&")+2; // find the first letter in the second name
 		String key2=key.substring(secName) + " & " + key.substring(0, secName-3);
@@ -126,7 +129,6 @@ public class BTree {
 		q.getLast().setHeight(0);
 		String ans="";
 		ans=BFS(q, ans);
-		System.out.println(ans);
 		return ans;
 	}//close toString
 }

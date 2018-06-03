@@ -14,6 +14,10 @@ public class Message{
 		parts=textBody.split(" ");
 	}
 
+	public HashTable getTable(){
+		return table;
+	}
+	
 	public String getNameOfTheDeliever() {
 		return nameOfTheDeliver;
 	}
@@ -40,6 +44,10 @@ public class Message{
 	
 	public String toString(){
 		return "The name of the deliver : "+this.nameOfTheDeliver+ " , The name of the reciever : " + this.nameOfTheReciever + " ,\nThe body message : " +this.textBody;
+	}
+	
+	public String[] getParts(){
+		return parts;
 	}
 	
 	/**the function creates a hash table for the message and inserts the body of the message into the table.

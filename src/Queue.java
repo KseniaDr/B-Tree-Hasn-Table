@@ -11,13 +11,15 @@ public class Queue {
 		size=0;
 	}
 
+	/**the function insert a B-Tree node to the queue
+	 * @param node the node that we want to insert.
+	 */
 	public void enqueue(BTreeNode node){
 		String data=nodeToString(node);
 		QNode oldlast = last;
         last = new QNode(data, node);
         last.setNext(null);
         last.setPrev(oldlast);
-        
         if (isEmpty())
         	first = last;
         else           
@@ -25,6 +27,9 @@ public class Queue {
         size++;
 	}
 
+	/**the function removes a node from the queue
+	 * @return the node that has been removeds
+	 */
 	public QNode dequeue(){
         if (isEmpty()) {
         	System.out.println("The queue is empty!");
@@ -42,6 +47,9 @@ public class Queue {
 		return size==0;
 	}
 	
+	/**this function makes a string from all of the keys in the node
+	 * @return the string that contains the keys
+	 */
 	private String nodeToString(BTreeNode node){
 		String temp="";
 		for(int i=0 ; i < node.getNumKeys() ; i++ ){

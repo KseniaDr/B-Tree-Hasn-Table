@@ -7,7 +7,7 @@ public class HashListElement {
 	
 	public HashListElement(String data){
 		this.data=data;
-		counter=0;
+		counter=1;
 	}
 	
 	public void setNext(HashListElement element){

@@ -1,30 +1,30 @@
-import java.awt.event.TextEvent;
+
 import java.io.File;
 import java.util.Iterator;
 import java.util.Scanner;
 
 public class Messages implements Iterable<Message> {
 
-	private Message[] messages;
 	private Spams spams;
+	private Message[] messages; 
 
-	public Messages(){
-		//messages= new Message[FindMessagesLength(String path)];
-		//spams= new Spam[FindSpamsLength(String path)];
-	}
+	public Messages(){}
 
-	
+/**find the length of the messages file
+ * @param path-the path of the file
+ * @return the size of the messages array
+ */
 	private int FindMessagesLength(String path){
 		Scanner read = null;
 		try{//try to read from a file
 			read = new Scanner(new File(path));
-			
 			int size=0;
 			while(read.hasNext()){//find the length of the messages array
 				String temp=read.nextLine();
 				if(temp.equals("#"))
 					size++;
 			}
+			read.close();
 			return size+1;
 		}
 		catch(Exception e){//if the file doesn't exist, print an error message.
@@ -33,8 +33,9 @@ public class Messages implements Iterable<Message> {
 		}
 	}
 
-	
-	public Iterator iterator() {
+/**the iterator
+ */
+	public Iterator<Message> iterator() {
 		return new MessageIterator(messages);
 	}
 
@@ -45,6 +46,7 @@ public class Messages implements Iterable<Message> {
 		Scanner read = null;
 		try{//try to read from a file
 			read = new Scanner(new File(path));
+			read.nextLine();//the first line is a blank
 			messages=new Message[FindMessagesLength(path)];
 			ReadMessagesFile(read);
 		}
@@ -59,11 +61,8 @@ public class Messages implements Iterable<Message> {
 	 */
 	private void ReadMessagesFile(Scanner read){
 		String nameOfTheDeliver="",nameOfTheReceiver="",bodyMessage="",bodyMessageNext="";
-		int indexPoints,i=0,temp=0;
+		int i=0;
 		while(read.hasNext()){ //while there is elements in the file.
-			if(temp==0)
-				read.nextLine();
-			temp++;
 			String tempDeliver=read.nextLine();
 			nameOfTheDeliver= tempDeliver.substring(tempDeliver.indexOf(":")+1, tempDeliver.length()); //the name of the deliver
 			String tempReceiver=read.nextLine();
@@ -77,44 +76,65 @@ public class Messages implements Iterable<Message> {
 			}
 			this.messages[i]=new Message(nameOfTheDeliver,nameOfTheReceiver,bodyMessage);//insert the message in to the array.
 			i++;
-			nameOfTheDeliver="";
-			nameOfTheReceiver="";
-			bodyMessage="";
+			nameOfTheDeliver=""; nameOfTheReceiver=""; bodyMessage="";
 		}
 	}
 
+/**find the spams messages from all of the messages.
+ * @param path-the path of the spam file
+ * @param btree- the friend tree
+ * @return a string of the numbers of the spam messages.
+ */
 	public String findSpams(String path, BTree btree) {
-		Scanner read = null;
+		Scanner read1 = null;
 		try{//try to read from a file
-			read = new Scanner(new File(path));
-			spams= new Spams(read,path);
-			return findSpams(btree);
+			read1 = new Scanner(new File(path));
+			spams= new Spams(read1,path);
+			Iterator<Message> itrMsg=iterator();
+			return findSpams(btree, itrMsg);
 		}
 		catch(Exception e){//if the file doesn't exist, print an error message.
 			System.out.println("could not find file 'spam_words.txt'");
+			return null;
 		}		
-		return null;
 	}
 
 	public void createHashTables(String string) {
-		try{
-			int sizeTable=Integer.parseInt(string);
-			//for(int i=0 ; i < messages.length ; i++)
-				//messages[i].createHashTable(sizeTable);
-		}
-		catch(RuntimeException e){
-			System.err.println("the input must be a number.");
-		}
-	}//close createHashTables
-	
-	private String findSpams(BTree btree){
-		for(int i=0 ; i < messages.length ; i++){
-			String friend= messages[i].getNameOfTheDeliever() + " & " + messages[i].getNameOfTheReciever();
-			if(!btree.search(friend)){
-				while(spams.hasNext()){
-					
-				}
+			try{
+		int sizeTable=Integer.parseInt(string);
+		for(int i=0 ; i < messages.length ; i++)
+			messages[i].createHashTable(sizeTable);
 			}
+			catch(RuntimeException e){
+				System.err.println("the input must be a number.");
 		}
 	}
+
+	/**a function that finds the spam messages and makes a string that contains the index of the message
+	 * @param btree-the friend tree
+	 * @param itrMsg- the message iterator
+	 * @return the string that contains the spam messages indexes.
+	 */
+	private String findSpams(BTree btree, Iterator<Message> itrMsg){
+		int i=0;
+		String spamMsg="";
+		while(itrMsg.hasNext()){//check all the messages that was sent
+			Message m=itrMsg.next();
+			String friend= m.getNameOfTheDeliever() + " & " + m.getNameOfTheReciever();
+			if(!btree.search(friend)){//if the deliver and the receiver are not friends
+				Iterator<Spam> itrSpm=spams.iterator();
+				while(itrSpm.hasNext()){//check if there are spam words in the message
+					Spam s=itrSpm.next();
+					int num=m.getTable().search(s.getSpamWord());//return the number of time that the spam words appears in the message
+					double prec=((double)(num*100))/((double)m.getParts().length);//the percent of the spam word in the message
+					if(prec > s.getPercentageOfSpam()){
+						spamMsg=spamMsg + i + ",";	
+						break;
+					}
+				}//close second while
+			}
+			i++;
+		}//close first while
+		return spamMsg.substring(0, spamMsg.length()-1);
+	}//close findSpams
 }
